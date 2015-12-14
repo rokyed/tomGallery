@@ -1,0 +1,66 @@
+.tom-boy-Gallery {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-justify-content: flex-start;
+    -ms-flex-pack: start;
+    justify-content: flex-start;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    min-height: 100px;
+    max-height: 100%;
+    height: 768px;
+    min-width: 100px;
+    max-width: 100%;
+    width: 1280px;
+}
+.tom-boy-Gallery .image {
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    /*border: 1px solid #000;*/
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    transition: all 1s ease;
+    will-change: auto;
+    -webkit-transform: translateZ(0);
+    -moz-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+.tom-boy-Gallery .image:hover {
+    /*border-color: #fff;*/
+}
+
+.tom-boy-Gallery .expanded {
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    border: none;
+    background-size: auto !important;
+    background-color: #333;
+}
+
+.tom-boy-Gallery .expanded:hover {
+    transition: none !important;
+}
+
+.tom-boy-Gallery .compressed {
+    -webkit-flex: 0 0 0;
+    -ms-flex: 0 0 0;
+    flex: 0 0 0;
+    border: none;
+}
+
+.tom-boy-Gallery .bg-contain {
+    background-size: contain !important;
+}
