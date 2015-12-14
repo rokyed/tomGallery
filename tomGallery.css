@@ -29,12 +29,12 @@
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    transition: all 1s ease;
     will-change: auto;
     -webkit-transform: translateZ(0);
     -moz-transform: translateZ(0);
     -ms-transform: translateZ(0);
     transform: translateZ(0);
+    transition: all 1s;
 }
 
 .tom-boy-Gallery .image:hover {
@@ -50,7 +50,7 @@
     background-color: #333;
 }
 
-.tom-boy-Gallery .expanded:hover {
+.tom-boy-Gallery .expanded:not(.bg-contain):hover {
     transition: none !important;
 }
 

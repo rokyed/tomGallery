@@ -87,7 +87,7 @@
 
         me.attachEvents();
         me.listImages();
-        debugger;
+
         if (!(me.options.fullScreen == "contain"))
             me.paceMaker();
     };
@@ -165,13 +165,17 @@
     };
 
     TomGallery.prototype.onTransitionEnd = function(evt) {
-        if (!(evt.target && evt.target.classList.contains('expanded')))
-            return;
-
-        if (!(this.options.fullScreen == 'contain'))
+        if (!(evt.target && evt.target.classList.contains('expanded') && this.options.fullScreen == 'contain'))
             return;
 
         evt.target.classList.add('bg-contain');
+    };
+
+    TomGallery.prototype.addClsAfterDelay = function(element,className, delay) {
+        window.setTimeout(function() {
+            if (element.classList.contains('expanded'))
+                element.classList.add(className);
+        }, delay);
     };
 
     TomGallery.prototype.onClick = function(evt) {
@@ -187,6 +191,9 @@
                 this.currentSelection.element = evt.target;
                 this.compressImages(evt.target);
                 evt.target.classList.add('expanded');
+
+                if (this.options.fullScreen == 'contain')
+                    this.addClsAfterDelay(evt.target, 'bg-contain', this.options.fullScreenDelay);
             }
         }
     };
@@ -226,6 +233,7 @@
             'http://static.comicvine.com/uploads/original/13/133919/3508169-sarah_kerrigan___hots_12_by_erenor-d5y0142.jpg'
         ],
         fullScreen: 'contain',
+        fullScreenDelay: 1000,
         sensivity: {
             x: 300,
             y: 300
