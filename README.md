@@ -36,3 +36,9 @@ var TomBoyGal = new TomGallery(document.querySelector('.tom_gallery'), {
 defines the gliding across an opened image ( since is original size)
 ##### images:
 is an array of URLs that are pointing to your images
+#####: to contain the images instead of the mouse tracking one:
+add the following along sensivity and images:
+```javascript
+fullScreen: 'contain',
+fullScreenDelay: 1000 //one second in milliseconds ( if you change css do the same accordingly here)
+```
