@@ -32,12 +32,12 @@
 
     TomGallery.prototype.paceMaker = function() {
         var me = this;
-        window.setInterval(function(){
-            me.requestAnimationFrame.apply(window,[function(){
+
+        me.$timer = window.setInterval(function() {
+            me.requestAnimationFrame.apply(window, [function() {
                 me.tick.apply(me, arguments);
             }]);
-        },1);
-
+        }, 1);
     };
 
     TomGallery.prototype.tick = function() {
@@ -58,8 +58,8 @@
         me.setCss3Style(selection.element, 'background-position', [selection.currentPos.x, '% ', selection.currentPos.y, '%'].join(''));
     };
 
-    TomGallery.prototype.lerp = function (v0,v1,t) {
-        return (1-t)*v0 + t*v1;
+    TomGallery.prototype.lerp = function(v0, v1, t) {
+        return (1 - t) * v0 + t * v1;
     };
 
     TomGallery.prototype.toCamelCase = function(str) {
@@ -85,16 +85,43 @@
 
         me.element.classList.add('tom-boy-Gallery');
 
+        me.attachEvents();
+        me.listImages();
+        debugger;
+        if (!(me.options.fullScreen == "contain"))
+            me.paceMaker();
+    };
+
+    TomGallery.prototype.attachEvents = function() {
+        var me = this;
+
         me.element.addEventListener('click', function() {
             me.onClick.apply(me, arguments);
+        });
+
+        me.element.addEventListener('transitionend', function(){
+            me.onTransitionEnd.apply(me, arguments);
         });
 
         me.element.addEventListener('mousemove', function() {
             me.onMouseMove.apply(me, arguments);
         });
+    };
 
-        me.listImages();
-        me.paceMaker();
+    TomGallery.prototype.removeEvents = function() {
+        var me = this;
+
+        me.element.removeEventListener('click', function() {
+            me.onClick.apply(me, arguments);
+        });
+
+        me.element.removeEventListener('transitionend', function(){
+            me.onTransitionEnd.apply(me, arguments);
+        });
+
+        me.element.removeEventListener('mousemove', function() {
+            me.onMouseMove.apply(me, arguments);
+        });
     };
 
     TomGallery.prototype.listImages = function() {
@@ -109,6 +136,15 @@
         }
     };
 
+    TomGallery.prototype.emptyGallery = function() {
+        var me = this,
+            elements = me.element.querySelectorAll('*');
+
+        for (var i = 0, ln = elements.length; i < ln; i++)
+            if (elements[i].parentNode)
+                elements[i].parentNode.removeChild(elements[i]);
+    };
+
     TomGallery.prototype.compressImages = function(image) {
         var me = this,
             images = me.element.querySelectorAll('.image');
@@ -119,7 +155,6 @@
             images[i].classList.remove('bg-contain');
             me.setCss3Style(images[i], 'background-position', 'center');
 
-
             if (image) {
                 if (image === images[i])
                     continue;
@@ -127,6 +162,16 @@
                 images[i].classList.add('compressed');
             }
         }
+    };
+
+    TomGallery.prototype.onTransitionEnd = function(evt) {
+        if (!(evt.target && evt.target.classList.contains('expanded')))
+            return;
+
+        if (!(this.options.fullScreen == 'contain'))
+            return;
+
+        evt.target.classList.add('bg-contain');
     };
 
     TomGallery.prototype.onClick = function(evt) {
@@ -160,6 +205,14 @@
         me.currentSelection.targetPos.y = y;
     };
 
+    TomGallery.prototype.destroy = function() {
+        var me = this;
+
+        window.clearInterval(me.$timer);
+        me.removeEvents();
+        me.emptyGallery();
+    };
+
     var TomBoyGal = new TomGallery(document.querySelector('.tom_gallery'), {
         images: [
             'http://www.tcjaket.com/uploads/2/4/2/4/24245065/8604831.jpg',
@@ -172,10 +225,11 @@
             'https://mir-s3-cdn-cf.behance.net/project_modules/hd/1e8f4931765563.565f62d7c563a.jpg',
             'http://static.comicvine.com/uploads/original/13/133919/3508169-sarah_kerrigan___hots_12_by_erenor-d5y0142.jpg'
         ],
+        fullScreen: 'contain',
         sensivity: {
-            x: 100,
-            y: 500
-        }
+            x: 300,
+            y: 300
+        },
     });
 
     window['TBG'] = TomGallery;
